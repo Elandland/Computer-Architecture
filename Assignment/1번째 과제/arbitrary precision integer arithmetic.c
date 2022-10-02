@@ -86,9 +86,11 @@ int main() {
 		rev(plus2, cnt2);
 		rev(min1, cnt1);
 		rev(min2, cnt2);
+		rev(mul1, cnt1);
+		rev(mul2, cnt2);
 
-		plus1[strlen(arr1) - 1] = 0;
-		plus2[strlen(arr2) - 1] = 0;
+		plus1[strlen(plus1) - 1] = 0;
+		plus2[strlen(plus2) - 1] = 0;
 
 		plus_1(plus1, plus2, plus_res, strlen(plus1), strlen(plus2), max-1);			//음수 + 음수
 		if (plus_res[strlen(plus_res) - 1] == 0)
@@ -97,43 +99,67 @@ int main() {
 			plus_res[strlen(plus_res)] = '-';
 	
 		//음수 - 음수
-		
-		if (cnt2  > cnt1) {
-			min_1(min2, min1, min_res, strlen(min2), strlen(min1), max-1);			//양수 - 양수 ( 앞의 자릿수가 더 클 때 )
-		}
-		else if (cnt2 <cnt1)											//양수 - 양수 ( 뒤의 자릿수가 더 클 때)
-		{
-			min_1(min1, min2, min_res, strlen(min1), strlen(min2), max-1);
 
+		min1[strlen(min1) - 1] = 0;
+		min2[strlen(min2) - 1] = 0;
+
+		if (cnt1 > cnt2) {
+			min_1(min1, min2, min_res, strlen(min1), strlen(min2), max);			//양수 - 양수 ( 앞의 자릿수가 더 클 때 )
+			min_res[strlen(min_res)] = '-';
 		}
-		else	//cnt2 == cnt1 (연산 자리수 같을때)
+		else if (cnt1<cnt2)											//양수 - 양수 ( 뒤의 자릿수가 더 클 때)
 		{
-			strcpy(porg1, min1);
-			strcpy(porg2, min2);
+			min_1(min2, min1, min_res, strlen(min2), strlen(min1), max);
+			min_res[strlen(min_res)] = '-';
+		}
+		else	//cnt1 == cnt2
+		{
+			strcpy(porg1, plus1);
+			strcpy(porg2, plus2);
 
 			rev(porg1, cnt1);
 			rev(porg2, cnt2);
-
-			int comp_num = comp(porg2, porg1);
-
+			int comp_num = comp(porg1, porg2);
 			if (comp_num == 1) {
-				min_1(min2, min1, min_res, strlen(min2), strlen(min1), max-1);
-				min_res[strlen(min_res)] = '-';
+				min_1(min1, min2, min_res, strlen(min1), strlen(min2), max);
 			}
 			else if (comp_num == 0) {
-				min_1(min1, min2, min_res, strlen(min1), strlen(min2), max-1);
+				min_1(min1, min2, min_res, strlen(min1), strlen(min2), max);
 			}
 			else if (comp_num == -1)
 			{
-				min_1(min1, min2, min_res, strlen(min1), strlen(min2), max - 1);
+				min_1(min2, min1, min_res, strlen(min2), strlen(min1), max);
+				min_res[strlen(min_res)] = '-';
 			}
+
 		}
+
+
 
 		//음수 * 음수
 
+		mul1[strlen(mul1) - 1] = 0;
+		mul2[strlen(mul2) - 1] = 0;
+		multi_1(mul1, mul2, mul_res, cnt1, cnt2);
+
+
+
 
 		//음수 / 음수
-	
+
+		rev(div1, strlen(div1));
+		rev(div2, strlen(div2));
+
+		div1[strlen(div1) - 1] = 0;
+		div2[strlen(div2) - 1] = 0;
+
+		rev(div1, strlen(div1));
+		rev(div2, strlen(div2));
+
+		div_1(div1, div2, div_res, temp, temp_res, strlen(div1), strlen(div2));
+
+
+
 		cnt3 = strlen(plus_res);
 		rev(plus_res, cnt3);
 		cnt3 = strlen(min_res);
@@ -358,6 +384,14 @@ int main() {
 		rev(div_res, cnt3);
 
 	}
+
+
+	printf("첫 번째 수의 자릿수 : %d\n", cnt1);
+	printf("두 번째 수의 자릿수 : %d\n", cnt2);
+	printf("첫 번째 수 : %s\n", arr1);
+	printf("두 번째 수 : %s\n", arr2);
+	printf("\n");
+
 	printf("더하기 결과 = %s\n",plus_res);
 
 	printf("빼기 결과 = %s\n", min_res);
@@ -365,12 +399,7 @@ int main() {
 	printf("곱셈 결과 = %s\n", mul_res);
 
 	printf("나눗셈 결과 = %s\n", div_res);
-	printf("%d\n", cnt1);
-	printf("%d\n", cnt2);
-	printf("%d\n", cnt3);
-	printf("%s\n", arr1);
-	printf("%s\n", arr2);
-	printf("\n");
+
 
 
 	free(arr1);
@@ -544,7 +573,3 @@ int comp(char *arr1, char *arr2)		//안 뒤집은 양수끼리만 비교 , 문�
 	}
 }
 
-
-// 양수 양수 일때 덧셈, 뺄셈, 곱셈 ,나눗셈
-// 양수 음수 일때 덧셈, 뺄셈, 곱셈 , 나눗셈
-// 음수 음수 일때 덧셈, 
