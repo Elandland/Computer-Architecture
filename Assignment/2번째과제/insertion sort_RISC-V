@@ -1,0 +1,89 @@
+main:                                 
+        addi    sp, sp, -48
+        sw      ra, 44(sp)                   
+        sw      s0, 40(sp)                     
+        addi    s0, sp, 48
+        li      a0, 0
+        sw      a0, -12(s0)
+        li      a0, 3
+        sw      a0, -16(s0)
+        li      a0, 2
+        sw      a0, -20(s0)
+        li      a0, 1
+        sw      a0, -24(s0)
+        li      a1, 4
+        sw      a1, -28(s0)
+        li      a1, 6
+        sw      a1, -32(s0)
+        sw      a0, -36(s0)
+        j       .LBB0_1
+.LBB0_1:                                
+        lw      a1, -36(s0)
+        li      a0, 4
+        blt     a0, a1, .LBB0_10
+        j       .LBB0_2
+.LBB0_2:                              
+        lw      a0, -36(s0)
+        slli    a1, a0, 2
+        addi    a0, s0, -32
+        add     a0, a0, a1
+        lw      a0, 0(a0)
+        sw      a0, -44(s0)
+        lw      a0, -36(s0)
+        addi    a0, a0, -1
+        sw      a0, -40(s0)
+        j       .LBB0_3
+.LBB0_3:                             
+        lw      a1, -40(s0)
+        li      a0, 0
+        mv      a2, a0
+        sw      a2, -48(s0)                     
+        bge     a0, a1, .LBB0_5
+        j       .LBB0_4
+.LBB0_4:                               
+        lw      a0, -40(s0)
+        slli    a1, a0, 2
+        addi    a0, s0, -32
+        add     a0, a0, a1
+        lw      a1, 0(a0)
+        lw      a0, -44(s0)
+        slt     a0, a0, a1
+        sw      a0, -48(s0)                     
+        j       .LBB0_5
+.LBB0_5:                                
+        lw      a0, -48(s0)                   
+        andi    a0, a0, 1
+        beqz    a0, .LBB0_8
+        j       .LBB0_6
+.LBB0_6:                           
+        lw      a0, -40(s0)
+        slli    a1, a0, 2
+        addi    a0, s0, -32
+        add     a1, a1, a0
+        lw      a0, 0(a1)
+        sw      a0, 4(a1)
+        j       .LBB0_7
+.LBB0_7:                               
+        lw      a0, -40(s0)
+        addi    a0, a0, -1
+        sw      a0, -40(s0)
+        j       .LBB0_3
+.LBB0_8:                              
+        lw      a0, -44(s0)
+        lw      a1, -40(s0)
+        slli    a1, a1, 2
+        addi    a2, s0, -32
+        add     a1, a1, a2
+        sw      a0, 4(a1)
+        j       .LBB0_9
+.LBB0_9:                             
+        lw      a0, -36(s0)
+        addi    a0, a0, 1
+        sw      a0, -36(s0)
+        j       .LBB0_1
+.LBB0_10:
+        li      a0, 0
+        lw      ra, 44(sp)                     
+        lw      s0, 40(sp)                    
+        addi    sp, sp, 48
+        ret
